@@ -5,7 +5,6 @@ import DisplayTable from "../components/DisplayTable";
 import UploadFileDialog from '../components/UploadFIleDialog';
 
 function MainPage() {
-    const windowSize = useRef([window.innerWidth, window.innerHeight]);
     const [openUploadFileWin, setOpenUploadFileWin] = useState(false);
 
     const setUploadFileDialog = () => 

@@ -29,7 +29,7 @@ function TablePaginationActions(props) {
                 onClick={handleFirstPageButtonClick}
                 disabled={page === 0}
                 aria-label="first page"
-                sx={{ color: "white" }}
+                sx={{ color: "black" }}
             >
                 <FirstPage />
             </IconButton>
@@ -37,7 +37,7 @@ function TablePaginationActions(props) {
                 onClick={handleBackButtonClick}
                 disabled={page === 0}
                 aria-label="previous page"
-                sx={{ color: "white" }}
+                sx={{ color: "black" }}
             >
                 <KeyboardArrowLeft />
             </IconButton>
@@ -45,7 +45,7 @@ function TablePaginationActions(props) {
                 onClick={handleNextButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                 aria-label="next page"
-                sx={{ color: "white" }}
+                sx={{ color: "black" }}
             >
                 <KeyboardArrowRight />
             </IconButton>
@@ -53,7 +53,7 @@ function TablePaginationActions(props) {
                 onClick={handleLastPageButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                 aria-label="last page"
-                sx={{ color: "white" }}
+                sx={{ color: "black" }}
             >
                 <LastPage />
             </IconButton>
@@ -111,8 +111,8 @@ function DisplayTable() {
     ];
 
     const [page, setPage] = useState(0);
-    const [selectedFilename, setSelectedFilename] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [truefname, setTruefname] = useState('');
     const [openDeleteFileWin, setOpenDeleteFileWin] = useState(false);
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -124,17 +124,13 @@ function DisplayTable() {
 
     const setDeleteFileDialog = (filename) => 
     {
-        setSelectedFilename(filename);
+        setTruefname(filename)
         if(openDeleteFileWin === false){
             setOpenDeleteFileWin(true);
         } 
-        else
+        else {
             setOpenDeleteFileWin(false);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        }
     };
 
     return(
@@ -155,10 +151,7 @@ function DisplayTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rowsPerPage > 0
-                        ? transactionhistory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : transactionhistory
-                    ).map((row, index) => {
+                    {transactionhistory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                         const itemDate = new Date(row.date);
                         itemDate.setDate(itemDate.getDate());
                     return(
@@ -174,15 +167,11 @@ function DisplayTable() {
                             </TableCell>
                             <TableCell>
                                 <IconButton onClick={() => setDeleteFileDialog(row.filename)} sx={{ color: "white" }}>
-                                    {openDeleteFileWin ?
-                                        <>
-                                        <DeleteFileDialog
+                                    <DeleteFileDialog
                                         isOpen = {openDeleteFileWin}
-                                        closeDialog = {setDeleteFileDialog}
-                                        filename = {selectedFilename}
-                                        trueFileName = {selectedFilename}/>
-                                        </>
-                                    : <></>}
+                                        truefname = {truefname}
+                                        filename = {row.filename}
+                                        closeDialog = {setDeleteFileDialog}/> 
                                     <Delete style={{ color: 'black' }}/>
                                 </IconButton>
                             </TableCell>
@@ -198,20 +187,14 @@ function DisplayTable() {
                 <TableFooter>
                     <TableRow>
                         <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                            labelRowsPerPage=''
+                            rowsPerPageOptions={[]}
                             colSpan={3}
                             count={transactionhistory.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
-                            SelectProps={{
-                                inputProps: {
-                                'aria-label': 'rows per page',
-                                },
-                                sx: { color: "warning" }
-                            }}
                             sx={{ color: "black" }}
                             onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
                             ActionsComponent={TablePaginationActions}
                         />
                     </TableRow>

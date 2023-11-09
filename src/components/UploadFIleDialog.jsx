@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogContent, DialogTitle, DialogActions, Box, Typography, TextField } from "@mui/material";
+import { useState } from "react";
 
 const UploadFileDialog = (props) => {
 
@@ -15,6 +16,7 @@ const UploadFileDialog = (props) => {
                     }}>
 
                     <TextField
+                        onClick={e => e.stopPropagation()}
                         label="Input File Name"
                         variant="outlined"
                         sx={{

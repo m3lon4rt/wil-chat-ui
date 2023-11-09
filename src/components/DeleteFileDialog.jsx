@@ -3,13 +3,13 @@ import { Button, Dialog, DialogContent, DialogTitle, DialogActions, Box, Typogra
 const DeleteFileDialog = (props) => {
 
     return (
-        <>
-            <Dialog open={props.isOpen}>
+        <>{console.log(props.filename + " | " + props.truefname)}
+            <Dialog open={props.filename === props.truefname && props.isOpen ? true : false }>
                 <DialogTitle sx={{ fontWeight: 'bold' }}>DELETE FILE</DialogTitle>
                 <DialogContent>
                     <Box sx={{
                         display: 'flex',
-                        JustifyContent: 'center', 
+                        JustifyContent: 'center',   
                         alignItems: 'center',
                         flexDirection: 'column',
                     }}>
