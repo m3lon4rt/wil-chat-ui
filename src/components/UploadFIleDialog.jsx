@@ -17,7 +17,7 @@ const UploadFileDialog = (props) => {
 
                     <TextField
                         onClick={e => e.stopPropagation()}
-                        label="Input File Name"
+                        label="Input File Path"
                         variant="outlined"
                         sx={{
                             width: '100%'
