@@ -174,11 +174,15 @@ function DisplayTable() {
                             </TableCell>
                             <TableCell>
                                 <IconButton onClick={() => setDeleteFileDialog(row.filename)} sx={{ color: "white" }}>
-                                    <DeleteFileDialog
-                                    isOpen = {openDeleteFileWin}
-                                    closeDialog = {setDeleteFileDialog}
-                                    filename = {selectedFilename}
-                                    trueFileName = {selectedFilename}/>
+                                    {openDeleteFileWin ?
+                                        <>
+                                        <DeleteFileDialog
+                                        isOpen = {openDeleteFileWin}
+                                        closeDialog = {setDeleteFileDialog}
+                                        filename = {selectedFilename}
+                                        trueFileName = {selectedFilename}/>
+                                        </>
+                                    : <></>}
                                     <Delete style={{ color: 'black' }}/>
                                 </IconButton>
                             </TableCell>

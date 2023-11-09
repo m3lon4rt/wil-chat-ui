@@ -2,9 +2,20 @@ import { useState, useRef } from 'react'
 import { Box, Button } from "@mui/material";
 import NavBar from '../components/Navbar';
 import DisplayTable from "../components/DisplayTable";
+import UploadFileDialog from '../components/UploadFIleDialog';
 
 function MainPage() {
     const windowSize = useRef([window.innerWidth, window.innerHeight]);
+    const [openUploadFileWin, setOpenUploadFileWin] = useState(false);
+
+    const setUploadFileDialog = () => 
+    {
+        if(openUploadFileWin === false){
+            setOpenUploadFileWin(true);
+        } 
+        else
+            setOpenUploadFileWin(false);
+    };
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -22,6 +33,7 @@ function MainPage() {
                 <h2>FILE TABLE</h2>
                 <DisplayTable />
                 <Button
+                    onClick={() => setUploadFileDialog()}
                     sx={{
                         marginTop: '2rem',
                         backgroundColor: '#ffdd00',
@@ -31,7 +43,10 @@ function MainPage() {
                         height: '40px',
                         ml: '84%'
                     }}>
-
+                    
+                    <UploadFileDialog
+                        isOpen = {openUploadFileWin}
+                        closeDialog = {setUploadFileDialog}/>
                     Upload
 
                 </Button>
