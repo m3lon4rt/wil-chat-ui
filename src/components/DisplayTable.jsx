@@ -1,7 +1,8 @@
 import { FirstPage, KeyboardArrowLeft, KeyboardArrowRight, LastPage, Delete } from "@mui/icons-material";
 import { Box, IconButton, Paper, Table, TableBody, TableCell, TableFooter, TableHead, TablePagination, TableRow } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/system";
+import axios from 'axios';
 import DeleteFileDialog from "./DeleteFileDialog";
 
 function TablePaginationActions(props) {
@@ -72,48 +73,29 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 function DisplayTable() {
     //data
-    const transactionhistory = [
-        {
-            filename: "Data.pdf",
-            author: "Unknown",
-            date: "2021-11-08"
-        },
-        {
-            filename: "Training_Data.pdf",
-            author: "Unknown",
-            date: "2021-11-08"
-        },
-        {
-            filename: "Scraped_Data.pdf",
-            author: "Unknown",
-            date: "2021-11-08"
-        },
-        {
-            filename: "Extra_Data.pdf",
-            author: "Unknown",
-            date: "2021-11-08"
-        },
-        {
-            filename: "Sample_Data.pdf",
-            author: "Unknown",
-            date: "2021-11-08"
-        },
-        {
-            filename: "Old_Data.pdf",
-            author: "Unknown",
-            date: "2021-11-08"
-        },
-        {
-            filename: "Mysterious_Data.pdf",
-            author: "Unknown",
-            date: "2021-11-08"
-        },
-    ];
-
+    const [data, setData] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [truefname, setTruefname] = useState('');
     const [openDeleteFileWin, setOpenDeleteFileWin] = useState(false);
+
+    useEffect(() => {
+        getData
+    }, [page]);
+
+    function getData() {
+        console.log(query)
+        axios.get(`http://127.0.0.1:5000/query/${query}`).then((response) => {
+            const res = response.data
+            setData(current => [...current, res])
+        }).catch((error) => {
+            if (error.response) {
+                console.log(error.response)
+                console.log(error.response.status)
+                console.log(error.response.headers)
+            }
+        })
+    }
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - transactionhistory.length) : 0;
@@ -151,7 +133,7 @@ function DisplayTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {transactionhistory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+                    {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                         const itemDate = new Date(row.date);
                         itemDate.setDate(itemDate.getDate());
                     return(
@@ -190,7 +172,7 @@ function DisplayTable() {
                             labelRowsPerPage=''
                             rowsPerPageOptions={[]}
                             colSpan={3}
-                            count={transactionhistory.length}
+                            count={data.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             sx={{ color: "black" }}

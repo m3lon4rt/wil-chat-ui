@@ -1,6 +1,30 @@
 import { Button, Dialog, DialogContent, DialogTitle, DialogActions, Box, Typography } from "@mui/material";
 
 const DeleteFileDialog = (props) => {
+    const handleSave = () => {
+        axios.delete(`https://localhost:7216/api/Expenses/${props.id}`)
+        .then(response => {
+            // Handle the response data
+            setIsSuccessful(true);
+            console.log(isSuccessful);
+            console.log(response.data);
+            console.log(props.id);
+        })
+        .catch(error => {
+            // Handle any errors
+            setIsError(true);
+            console.log(isError);
+            setErrorMessage(error.response.data)
+            console.error(errorMessage);
+        });
+        
+        // Close the dialog
+        handleClose();
+    };
+
+    const handleClose = () => {
+        props.closeDialog();
+    };
 
     return (
         <>{console.log(props.filename + " | " + props.truefname)}
@@ -28,6 +52,7 @@ const DeleteFileDialog = (props) => {
                         m: "0rem 1.5rem 1.5rem 1.5rem"
                     }}>
                         <Button
+                            onClick={handleSave}
                             sx={{
                                 marginTop: '2rem',
                                 backgroundColor: '#ffdd00',
@@ -40,6 +65,7 @@ const DeleteFileDialog = (props) => {
                             Delete
                         </Button>
                         <Button
+                            onClick={handleClose}
                             sx={{
                                 marginTop: '2rem',
                                 backgroundColor: '#ffdd00',

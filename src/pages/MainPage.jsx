@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Box, Button } from "@mui/material";
+import { Box, Button, Card, List, ListItem, Typography } from "@mui/material";
 import NavBar from '../components/Navbar';
 import DisplayTable from "../components/DisplayTable";
 import UploadFileDialog from '../components/UploadFIleDialog';
@@ -16,11 +16,17 @@ function MainPage() {
             setOpenUploadFileWin(false);
     };
 
+    const flexContainer = {
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 0,
+      };
+
     return (
         <Box sx={{ display: 'flex' }}>
             <NavBar />
             <Box
-                position='fixed'
+                position='relative'
                 sx={{
                     paddingTop: "64px",
                     flexGrow: 1,
@@ -49,7 +55,24 @@ function MainPage() {
                     Upload
 
                 </Button>
-
+                
+                <h2>TBI UPDATES</h2>
+                <List style={flexContainer}>
+                    <ListItem>
+                        <Card>
+                        <Typography>
+                            Foobar
+                        </Typography>
+                        </Card>
+                    </ListItem>
+                    <ListItem>
+                        <Card>
+                        <Typography>
+                            Foobar
+                        </Typography>
+                        </Card>
+                    </ListItem>
+                </List>
             </Box>
         </Box>
     )
