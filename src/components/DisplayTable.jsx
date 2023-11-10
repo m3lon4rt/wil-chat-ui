@@ -83,6 +83,7 @@ function DisplayTable() {
         getData
     }, [page]);
 
+    //get all files
     function getData() {
         console.log(query)
         axios.get(`http://127.0.0.1:5000/query/${query}`).then((response) => {

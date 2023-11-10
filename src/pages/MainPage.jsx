@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Button, Card, List, ListItem, Typography } from "@mui/material";
 import NavBar from '../components/Navbar';
 import DisplayTable from "../components/DisplayTable";
@@ -6,6 +6,26 @@ import UploadFileDialog from '../components/UploadFIleDialog';
 
 function MainPage() {
     const [openUploadFileWin, setOpenUploadFileWin] = useState(false);
+    const [scrapedData, setScrapedData] = useState([]);
+
+    useEffect(() => {
+        getData
+    });
+
+    //get scraped data
+    function getData() {
+        console.log(query)
+        axios.get(`http://127.0.0.1:5000/query/${query}`).then((response) => {
+            const res = response.data
+            setScrapedData(current => [...current, res])
+        }).catch((error) => {
+            if (error.response) {
+                console.log(error.response)
+                console.log(error.response.status)
+                console.log(error.response.headers)
+            }
+        })
+    }
 
     const setUploadFileDialog = () => 
     {
@@ -58,17 +78,19 @@ function MainPage() {
                 
                 <h2>TBI UPDATES</h2>
                 <List style={flexContainer}>
-                    <ListItem>
-                        <Card>
-                        <Typography>
-                            Foobar
+                    {scrapedData.map((p, index) => { return (
+                    <ListItem key={index}>
+                        <Card sx={{ width: '20vh', height: '25vh', padding: '20px', borderTop: '2px solid #ffdd00' }}>
+                        <Typography sx={{ fontWeight: 'bold' }}>
+                            Recently Scraped Updates Here!!
                         </Typography>
                         </Card>
                     </ListItem>
+                    )})}
                     <ListItem>
-                        <Card>
-                        <Typography>
-                            Foobar
+                        <Card sx={{ width: '30vh', height: 'fit-content', minHeight: '25vh', padding: '20px', borderTop: '2px solid #ffdd00' }}>
+                        <Typography sx={{ fontWeight: 'bold' }}>
+                            Recently Scraped Updates Here!!
                         </Typography>
                         </Card>
                     </ListItem>

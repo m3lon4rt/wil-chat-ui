@@ -1,6 +1,11 @@
 import { Button, Dialog, DialogContent, DialogTitle, DialogActions, Box, Typography } from "@mui/material";
+import axios from 'axios';
 
 const DeleteFileDialog = (props) => {
+    const [isSuccessful, setIsSuccessful] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleSave = () => {
         axios.delete(`https://localhost:7216/api/Expenses/${props.id}`)
         .then(response => {

@@ -1,7 +1,44 @@
 import { Button, Dialog, DialogContent, DialogTitle, DialogActions, Box, Typography, TextField } from "@mui/material";
 import { useState } from "react";
+import axios from 'axios';
 
 const UploadFileDialog = (props) => {
+    const [filePath, setFilePath] = useState("");
+    const [isSuccessful, setIsSuccessful] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleFilePathChange = (event) => {
+        const inputValue = event.target.value;
+        setFilePath(inputValue);
+    }
+
+    const handleSave = () => {
+        axios.post(`https://localhost:7216/api/Expenses/${props.id}`, {
+            path: filePath
+        })
+        .then(response => {
+            // Handle the response data
+            setIsSuccessful(true);
+            console.log(isSuccessful);
+            console.log(response.data);
+            console.log(props.id);
+        })
+        .catch(error => {
+            // Handle any errors
+            setIsError(true);
+            console.log(isError);
+            setErrorMessage(error.response.data)
+            console.error(errorMessage);
+        });
+        
+        // Close the dialog
+        handleClose();
+    };
+
+    const handleClose = () => {
+        props.closeDialog();
+    };
 
     return (
         <>
@@ -16,6 +53,8 @@ const UploadFileDialog = (props) => {
                     }}>
 
                     <TextField
+                        id="Filename"
+                        onChange={handleFilePathChange}
                         onClick={e => e.stopPropagation()}
                         label="Input File Path"
                         variant="outlined"
@@ -35,6 +74,7 @@ const UploadFileDialog = (props) => {
                         m: "0rem 1.5rem 1.5rem 1.5rem"
                     }}>
                         <Button
+                            onClick={handleSave}
                             sx={{
                                 marginTop: '2rem',
                                 backgroundColor: '#ffdd00',
@@ -47,6 +87,7 @@ const UploadFileDialog = (props) => {
                             Upload
                         </Button>
                         <Button
+                            onClick={handleClose}
                             sx={{
                                 marginTop: '2rem',
                                 backgroundColor: '#ffdd00',
